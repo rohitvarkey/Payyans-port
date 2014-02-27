@@ -20,10 +20,10 @@ public class Payyans {
 	{
 		input_file_name = "";
 		output_file_name = "";
-		mapping_file_name = "charaka";
+		mapping_file_name = "";
 		pdf = 0;
 		direction = "a2u";
-		LoadRules();
+		//LoadRules();
 		TestLoadRules();
 		//TODO : Normalizer instance
 	}
@@ -40,7 +40,14 @@ public class Payyans {
 	while(true)
 	{
 		line_number++;
-		byte[] utf8 = rules_file.readLine().getBytes("UTF-8");
+		byte[] utf8;
+		try{
+			
+		utf8 = rules_file.readLine().getBytes("UTF-8");
+		}catch(NullPointerException e){
+			
+			break;
+		}
 		text = new String(utf8, "UTF-8");
 		if(text=="")
 		{
@@ -81,8 +88,14 @@ public class Payyans {
 	}
 	}
 	
-	void TestLoadRules()
+	void TestLoadRules() throws IOException
 	{
-		System.out.println(rulesDict.get("A"));
+		String[] mapping_files = {"ambili","charaka","haritha","indulekha","karthika","manorama","matweb","nandini","panchari","revathi","template","uma","valluvar"};
+		for(int i = 0;i<mapping_files.length;i++)
+		{
+			mapping_file_name = mapping_files[i];
+			LoadRules();
+			System.out.println(mapping_file_name +" has A mapped to"+ rulesDict.get("A"));
+		}
 	}
 }
